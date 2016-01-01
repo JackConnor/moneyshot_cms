@@ -3,6 +3,8 @@ var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
+var dotenv       = require('dotenv');
+dotenv.load();
 var bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
@@ -56,5 +58,5 @@ app.use(function(err, req, res, next) {
   });
 });
 
-
+console.log(process.env.DB_URL_2);
 module.exports = app;
