@@ -14,6 +14,11 @@ var methodOverride = require('method-override');
 
 angular.module = function(app){
 
-// app.get();
+app.get('/api/test', function(req, res){
+  console.log('got it');
+  res.json('testing testing')
+});
 
 }
+
+// mongoose.connect(process.env.DB_URL_2);

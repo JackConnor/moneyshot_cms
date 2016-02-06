@@ -1,0 +1,8 @@
+<h2>The Skate Feed</h2>
+<div class="videoDash">
+  <div class="videoBox videoBox{{$index}}" ng-repeat='video in video.hellYea track by $index'>
+    <iframe enablejsapi="1" class='videoFrame' width='100%' id='video{{$index}}'
+      src="" allowfullscreen>
+    </iframe>
+  </div>
+</div>

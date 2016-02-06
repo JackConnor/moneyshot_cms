@@ -58,5 +58,12 @@ app.use(function(err, req, res, next) {
   });
 });
 
-console.log(process.env.DB_URL_2);
+app.listen(process.env.PORT || '5555');
+
+app.get('*', function(req, res){
+
+  res.sendFile( __dirname + '/public/index.html')
+})
+
+// console.log(process.env.DB_URL_2);
 module.exports = app;
