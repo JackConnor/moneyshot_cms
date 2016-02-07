@@ -38,6 +38,7 @@ angular.module('videoController', ['seedFactory'])
       console.log('oi');
       var commentText = $('.newComment'+ind).val();
       console.log(commentText);
+      self.test2.push(commentText);
     }
     self.addComment = addComment;
   }
