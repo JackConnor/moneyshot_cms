@@ -1,17 +1,15 @@
 <h2>The Skate Feed</h2>
 
-<div class="videoBox videoBox{{$index}}" ng-repeat='data in video.test1'>
-  In the first repeat
+<div class="videoBox videoBox{{$index}}" ng-repeat='data in video.allPosts'>
   {{data}}
   <iframe enablejsapi="1" class='videoFrame' width='100%' id='video{{$index}}'
     src="" allowfullscreen>
   </iframe>
-  <div class="testRep2" ng-repeat='data2 in video.test2'>
-    In the Second
-    {{data2}}
+  <div class="testRep2" ng-repeat='data2 in video.allComments[$index]'>
+    {{data2.content}}
   </div>
-  <input type="text" name="name" class='newComment newComment{{$index}}'>
-  <button type="button" class='addComment addComment{{$index}}' ng-click='video.addComment($index)'>Add Comment</button>
+  <input type="text" name="commentText" class='newComment newComment{{$index}}'>
+  <button type="button" id='{{data._id}}' class='addComment addComment{{$index}}' ng-click='video.addComment($event, $index)'>Add Comment</button>
 </div>
 
 

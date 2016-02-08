@@ -12,5 +12,11 @@ angular.module('app.routes', [ 'ngRoute'])
       ,controllerAs: 'video'
     })
 
+    .when('/cms', {
+      templateUrl: 'templates/_cms.html'
+      ,controller: 'cmsCtrl'
+      ,controllerAs: 'cms'
+    })
+
     .otherwise('/')
   }

@@ -1,28 +1,37 @@
-angular.module('videoController', ['seedFactory'])
+angular.module('videoController', ['seedFactory', 'getPostsFactory', 'postCommentFactory', 'addCommentToVideoPostFactory'])
 
   .controller('videoCtrl', videoCtrl);
 
-  videoCtrl.$inject = ['$http', 'seedFactory'];
-  function videoCtrl($http, seedFactory){
+  videoCtrl.$inject = ['$http', 'seedFactory', 'getPosts', 'postComment', 'addCommentToPost'];
+  function videoCtrl($http, seedFactory, getPosts, postComment, addCommentToPost){
     var self = this;
+    console.log(addCommentToPost);
+    //////load all of our posts into a global variable
+    self.allPosts;
+    getPosts()
+      .then(function(allPosts){
+        self.allPosts = allPosts.data;/////this is our global "All Posts" variable
+        console.log(self.allPosts);
+        loadComments(self.allPosts);
+      })
 
-    self.test1 = seedFactory;
-    self.test2 = ['comment1', 'comment2', 'comment3']
+    self.allComments = []
 
-    self.testFunction = function(){
-      console.log('yoyoyoyoyoyoyo');
+    function loadComments(allPosts){
+      for (var i = 0; i < allPosts.length; i++) {
+        self.allComments.push(allPosts[i].comments)
+      }
     }
-    console.log('in the video Controller');
-    console.log(seedFactory);
-    self.hellYea = seedFactory;
-    self.seedComments = ["lasjfdlksaj", "lksjdflkajslkdsjflksja"];
+
+
+
+    /////function to asynchronously load all the youtube videos
     var loadCount = 0;
     setInterval(function(){
       if(loadCount <= 15 && $('#video0').attr('src') == ''){
-        for (var i = 0; i < self.hellYea.length; i++) {
+        for (var i = 0; i < self.allPosts.length; i++) {
           $("#video"+i).ready(function(){
-            console.log('window ready');
-            $("#video"+i).attr('src', "https://www.youtube.com/embed/"+self.hellYea[i])
+            $("#video"+i).attr('src', "https://www.youtube.com/embed/"+self.allPosts[i].ytEmbedCode)
           })
         }
       }
@@ -33,12 +42,26 @@ angular.module('videoController', ['seedFactory'])
 
       }
     }, 500);
-    function addComment(ind){
-      console.log(ind);
-      console.log('oi');
-      var commentText = $('.newComment'+ind).val();
+
+    ////////////////////////////
+    ///begin logic for comment
+    ////////////////////////////
+    function addComment(evt, index){
+      console.log(index);
+      var postId = evt.currentTarget.id
+      var commentText = evt.target.parentNode.children.commentText.value;
       console.log(commentText);
-      self.test2.push(commentText);
+      postComment({content: commentText, videoPost: postId})
+      .then(function(newComment){
+        self.allComments[index].push(newComment.data)/////update the current array live
+        addCommentToPost(postId, newComment.data)
+        .then(function(updPost){
+          console.log(updPost);
+        })
+      })
     }
     self.addComment = addComment;
+    ////////////////////////////
+    ///begin logic for comment
+    ////////////////////////////
   }
