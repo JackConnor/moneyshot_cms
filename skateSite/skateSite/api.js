@@ -88,15 +88,41 @@ module.exports = function(app){
 
   app.post('/api/new/user', function(req, res){
     console.log(req.body);
-    bcrypt.genSalt(10, function(err, salt){
-      console.log(salt);
-      bcrypt.hash(req.body.password, salt, function(err, hash){
-        console.log(hash);
-        User.create({username: req.body.username, passwordDigest: hash}, function(err, newUser){
-          console.log(newUser);
-          res.json(newUser);
-        })
-      })
+    User.findOne({username: req.body.username}, function(err, user){
+      if(user && user != null){
+        res.json('username taken');
+      }
+      else {
+        if(req.body.adminPassword && req.body.adminPassword == "DaewonNoseblunt"){
+          /////user trying to signin as an admin
+          console.log('yes password');
+          bcrypt.genSalt(10, function(err, salt){
+            console.log(salt);
+            bcrypt.hash(req.body.password, salt, function(err, hash){
+              console.log(hash);
+              User.create({username: req.body.username, passwordDigest: hash, admin: true}, function(err, newUser){
+                console.log(newUser);
+                res.json(newUser);
+              })
+            })
+          })
+        }
+        else if(req.body.adminPassword && req.body.adminPassword != "DaewonNoseblunt"){
+          res.json('password issue');
+        }
+        else {
+          bcrypt.genSalt(10, function(err, salt){
+            console.log(salt);
+            bcrypt.hash(req.body.password, salt, function(err, hash){
+              console.log(hash);
+              User.create({username: req.body.username, passwordDigest: hash, admin: false}, function(err, newUser){
+                console.log(newUser);
+                res.json(newUser);
+              })
+            })
+          })
+        }
+      }
     })
   })
 
@@ -107,21 +133,18 @@ module.exports = function(app){
       if(user == null){
         res.json('no user')
       }
-      console.log(user);
-      console.log(req.body.password);
-      console.log(user.passwordDigest);
-      var passwordHash =  bcrypt.compareSync(req.body.password, user.passwordDigest);
-      console.log(passwordHash);
-      if(passwordHash == true){
-        bcrypt.compare(req.body.password, user.passwordDigest, function(err, result){
-          console.log(result);
-          if(result == true){
-            res.json(user);
-          }
-        });
-      }
       else {
-        res.json('password match issue')
+        var passwordHash =  bcrypt.compareSync(req.body.password, user.passwordDigest);
+        if(passwordHash == true){
+          bcrypt.compare(req.body.password, user.passwordDigest, function(err, result){
+            if(result == true){
+              res.json(user);
+            }
+          });
+        }
+        else {
+          res.json('password match issue')
+        }
       }
     })
   })

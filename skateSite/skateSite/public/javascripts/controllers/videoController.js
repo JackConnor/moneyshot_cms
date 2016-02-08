@@ -1,16 +1,19 @@
-angular.module('videoController', ['seedFactory', 'getPostsFactory', 'postCommentFactory', 'addCommentToVideoPostFactory', 'postVideoFactory', 'signinUserFactory'])
+angular.module('videoController', ['seedFactory', 'getPostsFactory', 'postCommentFactory', 'addCommentToVideoPostFactory', 'postVideoFactory', 'signinUserFactory', 'signupUserFactory'])
 
   .controller('videoCtrl', videoCtrl);
 
-  videoCtrl.$inject = ['$http', 'seedFactory', 'getPosts', 'postComment', 'addCommentToPost', 'postVideo', 'signinUser'];
-  function videoCtrl($http, seedFactory, getPosts, postComment, addCommentToPost, postVideo, signinUser){
+  videoCtrl.$inject = ['$http', 'seedFactory', 'getPosts', 'postComment', 'addCommentToPost', 'postVideo', 'signinUser', 'signupUser'];
+  function videoCtrl($http, seedFactory, getPosts, postComment, addCommentToPost, postVideo, signinUser, signupUser){
     //////////////////////
     //////global variables
     //////////////////////
     var self = this;
     self.videoOpen     = false; ////this toggles an ng-if to open a modal
     self.signinToggle  = false; ////this toggles an ng-if to open a signin modal
+    self.signupModalToggle = false;
     self.admin         = false; ////global variable to show cms functionality
+    self.addAdminPW    = false;
+    self.signedInUser  = false;
     self.allPosts;
     self.allComments   = []
     var loadCount = 0;
@@ -22,8 +25,13 @@ angular.module('videoController', ['seedFactory', 'getPostsFactory', 'postCommen
     function checkToken(){
       if(window.localStorage.skateToken == "admin"){
         self.admin = true;
+        self.signedInUser = true;
+      }
+      else if(window.localStorage.skateToken == 'user'){
+        self.signedInUser = true;
       }
     }
+    checkToken();
 
 
     //////load all of our posts into a global variable
@@ -45,8 +53,6 @@ angular.module('videoController', ['seedFactory', 'getPostsFactory', 'postCommen
         self.allComments.push(allPosts[i].comments)
       }
     }
-
-
 
     /////function to asynchronously load all the youtube videos
     setInterval(function(){
@@ -137,11 +143,22 @@ angular.module('videoController', ['seedFactory', 'getPostsFactory', 'postCommen
 
     //////function to open modal
     function openSigninModal(){
-      console.log('yoyo');
-      self.signinToggle = !self.signinToggle;
-      self.videoOpen = false;
+      if(self.signinToggle == false){
+        self.signinToggle = !self.signinToggle;
+        self.videoOpen = false;
+      }
     }
     self.openSignin = openSigninModal;
+
+    function signOut(){
+      window.localStorage.skateToken = '';
+      self.videoOpen = false;
+      self.signinToggle = false;
+      self.signupModalToggle = false;
+      self.admin = false;
+      self.signedInUser = false;
+    }
+    self.signOut = signOut;
 
     ///////function to submit signin credentials
     function signinNewUser(){
@@ -162,13 +179,74 @@ angular.module('videoController', ['seedFactory', 'getPostsFactory', 'postCommen
           self.signinToggle = !self.signinToggle;
         }
         else {
-          window.localStorage.skateToken = "admin";
-          self.admin = true;
-          self.signinToggle = !self.signinToggle;
+          if(self.currentUser.admin == true){
+            window.localStorage.skateToken = "admin";
+            self.admin = true;
+            self.signedInUser = !self.signedInUser;
+            document.querySelector('.signinButton').innerText = "Signout"
+            self.signinToggle = !self.signinToggle;
+          }
+          else if(self.currentUser.admin == false){
+            window.localStorage.skateToken = "user";
+            self.signedInUser = !self.signedInUser;
+            document.querySelector('.signinButton').innerText = "Signout"
+            self.signinToggle = !self.signinToggle;
+          }
         }
       })
     }
     self.signinNewUser = signinNewUser;
+
+    //////function to open the signup modal, for new users
+    function openSignupModal(){
+      self.signupModalToggle = !self.signupModalToggle;
+    }
+    self.openSignup = openSignupModal;
+
+    //////function to submit a new user for signup
+    function submitSignup(){
+      var username = document.querySelector('.signupUsername').value;
+      var password = document.querySelector('.signupPassword').value;
+      if(document.querySelector('.signupAdminPassword').value){
+        var adminPassword = document.querySelector('.signupAdminPassword').value;
+        var userCredentials = {username: username, password, adminPassword: adminPassword}
+      }
+      else {
+        var userCredentials = {username: username, password}
+      }
+      console.log(userCredentials);
+      signupUser(userCredentials)
+        .then(function(newUser){
+          if(newUser.data == 'password issue'){
+            alert('Your admin password was incorrect, please try again')
+          }
+          else if(newUser.data == 'username taken'){
+            alert('that username is already taken, could you try another one?')
+          }
+          else {
+            console.log(newUser.data);
+            if(newUser.data.admin == true){
+              window.localStorage.skateToken = "admin";
+              self.signedInUser = !self.signedInUser;
+              self.admin = true;
+              self.signupModalToggle = false;
+            }
+            else if(newUser.data.admin == false){
+              window.localStorage.skateToken = "user";
+              self.signedInUser = !self.signedInUser;
+              self.signupModalToggle = false;
+            }
+          }
+        })
+    }
+    self.submitSignup = submitSignup;
+
+    ////add admin signin field
+    function addAdminField(){
+      console.log('yoyoyoyo');
+      self.addAdminPW = !self.addAdminPW;
+    }
+    self.addAdminField = addAdminField;
     ///////////////////////////
     //end Signin Logic ////////
     ///////////////////////////

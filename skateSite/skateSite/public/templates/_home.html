@@ -1,4 +1,10 @@
-<div class="signinButton" ng-click='video.openSignin()'>Signin</div>
+<div class="signinButton" ng-if='!video.signedInUser'>
+  <span ng-click='video.openSignin()'>Signin</span>/
+  <span ng-click='video.openSignup()'>Signup</span>
+</div>
+<div class="signinButton" ng-if='video.signedInUser'>
+  <span ng-click='video.signOut()'>Logout</span>
+</div>
 <div class="newPostButton" ng-click='video.openModal()' ng-if='video.admin'></div>
 <div class="postModal" ng-if='video.videoOpen'>
   <input type="text" name="name" placeholder="video embed code" class='modalInput postEmbedCode'>
@@ -10,9 +16,23 @@
   <div class="signinBox">
     <input type="text" name="username" placeholder='Username' class='signinUsername modalInput'>
     <input type="text" name="password" placeholder='Password' class='signinPassword modalInput'>
+    <input type="text" name="adminpassword" placeholder='Admin Password' class='signinAdminPassword modalInput' ng-if='video.addAdminPW'>
     <div class="signinSubmit" ng-click='video.signinNewUser()'>
       Sign In
     </div>
+    <h4 ng-click='video.addAdminField()' class='signinAdminToggle'>Admin?</h4>
+  </div>
+</div>
+<div class="signupModal" ng-if='video.signupModalToggle'>
+  <div class="signinBox">
+    <h2>Sign Up Now!</h2>
+    <input type="text" name="username" placeholder='Username' class='signupUsername modalInput'>
+    <input type="text" name="password" placeholder='Password' class='signupPassword modalInput'>
+    <input type="text" name="adminpassword" placeholder='Admin Password' class='signupAdminPassword modalInput' ng-show='video.addAdminPW'>
+    <div class="signinSubmit" ng-click='video.submitSignup()'>
+      Sign Up
+    </div>
+    <h4 ng-click='video.addAdminField()' class='signinAdminToggle'>Admin?</h4>
   </div>
 </div>
 <h2>The Skate Feed</h2>
@@ -25,6 +45,6 @@
   <div class="testRep2" ng-repeat='data2 in video.allComments[$index]'>
     {{data2.content}}
   </div>
-  <input type="text" name="commentText" class='newComment newComment{{$index}}'>
-  <button type="button" id='{{data._id}}' class='addComment addComment{{$index}}' ng-click='video.addComment($event, $index)'>Add Comment</button>
+  <input type="text" name="commentText" class='newComment newComment{{$index}}' ng-if='video.signedInUser'>
+  <button type="button" id='{{data._id}}' class='addComment addComment{{$index}}' ng-click='video.addComment($event, $index)' ng-if='video.signedInUser'>Add Comment</button>
 </div>
