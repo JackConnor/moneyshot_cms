@@ -1,1 +1,1 @@
-angular.module('skate', ['ngRoute', 'videoController', 'cmsController', 'app.routes', 'seedFactory', 'postVideoFactory', 'getPostsFactory', 'postCommentFactory', 'addCommentToVideoPostFactory'])
+angular.module('skate', ['ngRoute', 'videoController', 'cmsController', 'singleController', 'app.routes', 'seedFactory', 'postVideoFactory', 'getPostsFactory', 'postCommentFactory', 'addCommentToVideoPostFactory'])

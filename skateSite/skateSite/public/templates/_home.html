@@ -1,7 +1,11 @@
+<div class="newPostButton" ng-click='video.openModal()'></div>
+<div class="postModal" ng-if='video.videoOpen'>
+
+</div>
 <h2>The Skate Feed</h2>
 
 <div class="videoBox videoBox{{$index}}" ng-repeat='data in video.allPosts'>
-  {{data}}
+  <h2 ng-click='video.goToSingle(data._id)'>{{data.title}}</h2>
   <iframe enablejsapi="1" class='videoFrame' width='100%' id='video{{$index}}'
     src="" allowfullscreen>
   </iframe>
@@ -11,17 +15,3 @@
   <input type="text" name="commentText" class='newComment newComment{{$index}}'>
   <button type="button" id='{{data._id}}' class='addComment addComment{{$index}}' ng-click='video.addComment($event, $index)'>Add Comment</button>
 </div>
-
-
-<!--
-<div class="videoDash">
-  <div class="videoBox videoBox{{$index}}" ng-repeat='video in video.hellYea track by $index'>
-    <iframe enablejsapi="1" class='videoFrame' width='100%' id='video{{$index}}'
-      src="" allowfullscreen>
-    </iframe>
-    <div class="commentBox" ng-repeat='comment in video.seedComments'>
-      {{comment}}
-      looo
-    </div>
-  </div>
-</div> -->

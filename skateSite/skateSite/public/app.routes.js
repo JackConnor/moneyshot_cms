@@ -18,5 +18,11 @@ angular.module('app.routes', [ 'ngRoute'])
       ,controllerAs: 'cms'
     })
 
+    .when('/video/:postId', {
+      templateUrl: 'templates/_singlevideo.html'
+      ,controller: 'singleCtrl'
+      ,controllerAs: 'single'
+    })
+
     .otherwise('/')
   }

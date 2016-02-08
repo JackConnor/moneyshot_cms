@@ -5,6 +5,8 @@ angular.module('videoController', ['seedFactory', 'getPostsFactory', 'postCommen
   videoCtrl.$inject = ['$http', 'seedFactory', 'getPosts', 'postComment', 'addCommentToPost'];
   function videoCtrl($http, seedFactory, getPosts, postComment, addCommentToPost){
     var self = this;
+
+    self.videoOpen  = false; ////this toggles an ng-if to open a modal
     console.log(addCommentToPost);
     //////load all of our posts into a global variable
     self.allPosts;
@@ -62,6 +64,27 @@ angular.module('videoController', ['seedFactory', 'getPostsFactory', 'postCommen
     }
     self.addComment = addComment;
     ////////////////////////////
-    ///begin logic for comment
+    ///end logic for comment
     ////////////////////////////
+
+    /////function to see full single post
+    function goToSingle(postId){
+      console.log('yooyoy');
+      console.log(postId);
+      window.location.hash = "#/video/"+postId;
+    }
+    self.goToSingle = goToSingle;
+
+    ////////////////////////////////////////
+    ///////////////Post a Video Modal Logic
+    ///////////////////////////////////////
+    function openModal(){
+      console.log(self.videoOpen);
+      self.videoOpen = !self.videoOpen;
+    }
+    self.openModal = openModal;
+    ////////////////////////////////////////
+    //////////End Post a Video Modal Logic
+    ///////////////////////////////////////
+
   }
