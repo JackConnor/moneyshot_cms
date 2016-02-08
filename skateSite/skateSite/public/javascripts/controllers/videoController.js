@@ -1,9 +1,9 @@
-angular.module('videoController', ['seedFactory', 'getPostsFactory', 'postCommentFactory', 'addCommentToVideoPostFactory'])
+angular.module('videoController', ['seedFactory', 'getPostsFactory', 'postCommentFactory', 'addCommentToVideoPostFactory', 'postVideoFactory'])
 
   .controller('videoCtrl', videoCtrl);
 
-  videoCtrl.$inject = ['$http', 'seedFactory', 'getPosts', 'postComment', 'addCommentToPost'];
-  function videoCtrl($http, seedFactory, getPosts, postComment, addCommentToPost){
+  videoCtrl.$inject = ['$http', 'seedFactory', 'getPosts', 'postComment', 'addCommentToPost', 'postVideo'];
+  function videoCtrl($http, seedFactory, getPosts, postComment, addCommentToPost, postVideo){
     var self = this;
 
     self.videoOpen  = false; ////this toggles an ng-if to open a modal
@@ -13,6 +13,7 @@ angular.module('videoController', ['seedFactory', 'getPostsFactory', 'postCommen
     getPosts()
       .then(function(allPosts){
         self.allPosts = allPosts.data;/////this is our global "All Posts" variable
+        self.allPosts = self.allPosts.reverse();
         console.log(self.allPosts);
         loadComments(self.allPosts);
       })
@@ -83,6 +84,21 @@ angular.module('videoController', ['seedFactory', 'getPostsFactory', 'postCommen
       self.videoOpen = !self.videoOpen;
     }
     self.openModal = openModal;
+
+    //////function to submit the post
+    function submitPost(){
+      var title = document.querySelector('.postTitle').value;
+      var embedCode = document.querySelector('.postEmbedCode').value;
+      var description = document.querySelector('.postDescription').value;
+      postVideo({title: title, embedCode: embedCode, description: description})
+      .then(function(newPost){
+        console.log(newPost);
+        self.allPosts.push(newPost.data);
+        self.videoOpen = !self.videoOpen;
+      })
+    }
+    self.submitPost = submitPost;
+
     ////////////////////////////////////////
     //////////End Post a Video Modal Logic
     ///////////////////////////////////////

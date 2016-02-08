@@ -1,6 +1,9 @@
 <div class="newPostButton" ng-click='video.openModal()'></div>
 <div class="postModal" ng-if='video.videoOpen'>
-
+  <input type="text" name="name" placeholder="video embed code" class='postEmbedCode'>
+  <input type="text" name="name" placeholder="Title" class='postTitle'>
+  <input type="text" name="name" placeholder="Description" class='postDescription'>
+  <input type="button" name="name" value="Submit" class='postSubmit' ng-click='video.submitPost()'>
 </div>
 <h2>The Skate Feed</h2>
 
