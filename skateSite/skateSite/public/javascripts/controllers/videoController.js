@@ -4,12 +4,20 @@ angular.module('videoController', ['seedFactory', 'getPostsFactory', 'postCommen
 
   videoCtrl.$inject = ['$http', 'seedFactory', 'getPosts', 'postComment', 'addCommentToPost', 'postVideo'];
   function videoCtrl($http, seedFactory, getPosts, postComment, addCommentToPost, postVideo){
+    //////////////////////
+    //////global variables
+    //////////////////////
     var self = this;
-
-    self.videoOpen  = false; ////this toggles an ng-if to open a modal
-    console.log(addCommentToPost);
-    //////load all of our posts into a global variable
+    self.videoOpen     = false; ////this toggles an ng-if to open a modal
+    self.signinToggle  = false; ////this toggles an ng-if to open a signin modal
     self.allPosts;
+    self.allComments   = []
+    var loadCount = 0;
+    //////////////////////
+    //end global variables
+    //////////////////////
+
+    //////load all of our posts into a global variable
     getPosts()
       .then(function(allPosts){
         self.allPosts = allPosts.data;/////this is our global "All Posts" variable
@@ -17,8 +25,6 @@ angular.module('videoController', ['seedFactory', 'getPostsFactory', 'postCommen
         console.log(self.allPosts);
         loadComments(self.allPosts);
       })
-
-    self.allComments = []
 
     function loadComments(allPosts){
       for (var i = 0; i < allPosts.length; i++) {
@@ -29,7 +35,6 @@ angular.module('videoController', ['seedFactory', 'getPostsFactory', 'postCommen
 
 
     /////function to asynchronously load all the youtube videos
-    var loadCount = 0;
     setInterval(function(){
       if(loadCount <= 15 && $('#video0').attr('src') == ''){
         for (var i = 0; i < self.allPosts.length; i++) {
@@ -82,6 +87,7 @@ angular.module('videoController', ['seedFactory', 'getPostsFactory', 'postCommen
     function openModal(){
       console.log(self.videoOpen);
       self.videoOpen = !self.videoOpen;
+      self.signinToggle = false;
     }
     self.openModal = openModal;
 
@@ -112,4 +118,19 @@ angular.module('videoController', ['seedFactory', 'getPostsFactory', 'postCommen
     //////////End Post a Video Modal Logic
     ///////////////////////////////////////
 
+    ///////////////////////////
+    ////Signin Logic //////////
+    ///////////////////////////
+    function openSigninModal(){
+      console.log('yoyo');
+      self.signinToggle = !self.signinToggle;
+      self.videoOpen = false;
+      if(self.signinToggle == true){
+
+      }
+    }
+    self.openSignin = openSigninModal;
+    ///////////////////////////
+    //end Signin Logic ////////
+    ///////////////////////////
   }

@@ -1,3 +1,4 @@
+<div class="signinButton" ng-click='video.openSignin()'>Signin</div>
 <div class="newPostButton" ng-click='video.openModal()'></div>
 <div class="postModal" ng-if='video.videoOpen'>
   <input type="text" name="name" placeholder="video embed code" class='modalInput postEmbedCode'>
@@ -5,10 +6,13 @@
   <input type="text" name="name" placeholder="Description" class='postDescription modalInput'>
   <input type="button" name="name" value="Submit" class='postSubmit' ng-click='video.submitPost()'>
 </div>
+<div class="signinModal" ng-if='video.signinToggle'>
+  Yooooo
+</div>
 <h2>The Skate Feed</h2>
 
 <div class="videoBox videoBox{{$index}}" ng-repeat='data in video.allPosts'>
-  <h2 ng-click='video.goToSingle(data._id)'>{{data.title}}</h2>
+  <h2 class='videopostTitle' ng-click='video.goToSingle(data._id)'>{{data.title}}</h2>
   <iframe enablejsapi="1" class='videoFrame' width='100%' id='video{{$index}}'
     src="" allowfullscreen>
   </iframe>
