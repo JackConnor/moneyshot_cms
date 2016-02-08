@@ -13,6 +13,17 @@ a {
   outline: 2px solid black;
 }
 
+.modalInput {
+  width: 70%;
+  height: 50px;
+  font-size: 23px;
+  text-align: center;
+  padding-top: 7px;
+  margin-left: 15%;
+  margin-top: 30px;
+  border-radius: 2px;
+}
+
 .newPostButton {
   width: 80px;
   height: 80px;
@@ -20,6 +31,10 @@ a {
   position: fixed;
   margin: 0 0 0 85%;
   z-index: 3;
+}
+
+.postEmbedCode {
+  margin-top: 160px;
 }
 
 .postModal {
@@ -30,6 +45,15 @@ a {
   position: fixed;
   background-color: black;
   z-index: 2;
+}
+
+.postSubmit {
+  display: block;
+  width: 120px;
+  height: 40px;
+  margin-top: 20px;
+  float: right;
+  margin-right: 20%;
 }
 
 .videoBox {

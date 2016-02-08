@@ -93,7 +93,16 @@ angular.module('videoController', ['seedFactory', 'getPostsFactory', 'postCommen
       postVideo({title: title, embedCode: embedCode, description: description})
       .then(function(newPost){
         console.log(newPost);
+        self.allPosts.reverse();
         self.allPosts.push(newPost.data);
+        self.allPosts.reverse();
+        self.allComments.reverse();
+        self.allComments.push([]);
+        self.allComments.reverse();
+        $("#video0").attr('src', "https://www.youtube.com/embed/"+self.allPosts[0].ytEmbedCode);
+        setTimeout(function(){
+          $("#video0").attr('src', "https://www.youtube.com/embed/"+self.allPosts[0].ytEmbedCode)
+        }, 1500);
         self.videoOpen = !self.videoOpen;
       })
     }
