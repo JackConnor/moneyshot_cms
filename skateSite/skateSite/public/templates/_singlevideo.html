@@ -1,1 +1,39 @@
-<h1>{{single.testDrive}}</h1>
+<div class="signinButton" ng-if='!single.signedInUser'>
+  <span ng-click='single.openSignin()'>Signin</span>/
+  <span ng-click='single.openSignup()'>Signup</span>
+</div>
+<div class="signinButton" ng-if='single.signedInUser'>
+  <span ng-click='single.signOut()'>Logout</span>
+</div>
+<h2 class='videopostTitle'>{{single.singlePostData.title}}</h2>
+<iframe enablejsapi="1" class='videoFrame' width='100%' id='videoSingle'
+  src="" allowfullscreen>
+</iframe>
+<div class="testRep2" ng-repeat='comment in single.singlePostData.comments'>
+  {{comment.content}}
+</div>
+<input type="text" name="commentText" class='newComment newComment{{$index}}' ng-if='single.signedInUser'>
+<button type="button" id='{{data._id}}' class='addComment addComment{{$index}}' ng-click='single.addComment($event, $index)' ng-if='single.signedInUser'>Add Comment</button>
+<div class="signinModal" ng-if='single.signinToggle'>
+  <div class="signinBox">
+    <input type="text" name="username" placeholder='Username' class='signinUsername modalInput'>
+    <input type="text" name="password" placeholder='Password' class='signinPassword modalInput'>
+    <input type="text" name="adminpassword" placeholder='Admin Password' class='signinAdminPassword modalInput' ng-if='single.addAdminPW'>
+    <div class="signinSubmit" ng-click='single.signinNewUser()'>
+      Sign In
+    </div>
+    <h4 ng-click='single.addAdminField()' class='signinAdminToggle'>Admin?</h4>
+  </div>
+</div>
+<div class="signupModal" ng-if='single.signupModalToggle'>
+  <div class="signinBox">
+    <h2>Sign Up Now!</h2>
+    <input type="text" name="username" placeholder='Username' class='signupUsername modalInput'>
+    <input type="text" name="password" placeholder='Password' class='signupPassword modalInput'>
+    <input type="text" name="adminpassword" placeholder='Admin Password' class='signupAdminPassword modalInput' ng-show='single.addAdminPW'>
+    <div class="signinSubmit" ng-click='single.submitSignup()'>
+      Sign Up
+    </div>
+    <h4 ng-click='single.addAdminField()' class='signinAdminToggle'>Admin?</h4>
+  </div>
+</div>

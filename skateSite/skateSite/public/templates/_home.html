@@ -5,7 +5,8 @@
 <div class="signinButton" ng-if='video.signedInUser'>
   <span ng-click='video.signOut()'>Logout</span>
 </div>
-<div class="newPostButton" ng-click='video.openModal()' ng-if='video.admin'></div>
+<div class="newPostButton" ng-click='video.openModal()' ng-if='video.admin'>
+  Add New Video</div>
 <div class="postModal" ng-if='video.videoOpen'>
   <input type="text" name="name" placeholder="video embed code" class='modalInput postEmbedCode'>
   <input type="text" name="name" placeholder="Title" class='postTitle modalInput'>

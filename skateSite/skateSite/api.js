@@ -30,6 +30,7 @@ module.exports = function(app){
     })
   })
 
+  ///////post a video
   app.post('/api/video', function(req, res){
     var newVideo = new Videopost();
     newVideo.creator = req.body.creator;
@@ -39,6 +40,16 @@ module.exports = function(app){
     newVideo.save(function(err, savedVideo){
       if(err){console.log(err)}
       res.json(savedVideo)
+    })
+  })
+
+  ////get a single video post, with all comments
+  app.get('/api/single/video/:postId', function(req, res){
+    console.log(req.params.postId);
+    Videopost.findOne({_id: req.params.postId})
+    .populate('comments')//////we want to pull all our comments with our videoposts
+    .exec(function(err, singlePost){
+      res.json(singlePost);
     })
   })
 
