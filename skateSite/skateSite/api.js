@@ -104,17 +104,25 @@ module.exports = function(app){
     console.log(req.body);
     User.findOne({"username":req.body.username}, function(err, user){
       if(err){console.log(err)}
+      if(user == null){
+        res.json('no user')
+      }
       console.log(user);
       console.log(req.body.password);
       console.log(user.passwordDigest);
       var passwordHash =  bcrypt.compareSync(req.body.password, user.passwordDigest);
       console.log(passwordHash);
-      bcrypt.compare(req.body.password, user.passwordDigest, function(err, result){
-        console.log(result);
-        if(result == true){
-          res.json(user);
-        }
-      });
+      if(passwordHash == true){
+        bcrypt.compare(req.body.password, user.passwordDigest, function(err, result){
+          console.log(result);
+          if(result == true){
+            res.json(user);
+          }
+        });
+      }
+      else {
+        res.json('password match issue')
+      }
     })
   })
   ///////////////////////////////////

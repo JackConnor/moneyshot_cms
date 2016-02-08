@@ -1,21 +1,30 @@
-angular.module('videoController', ['seedFactory', 'getPostsFactory', 'postCommentFactory', 'addCommentToVideoPostFactory', 'postVideoFactory'])
+angular.module('videoController', ['seedFactory', 'getPostsFactory', 'postCommentFactory', 'addCommentToVideoPostFactory', 'postVideoFactory', 'signinUserFactory'])
 
   .controller('videoCtrl', videoCtrl);
 
-  videoCtrl.$inject = ['$http', 'seedFactory', 'getPosts', 'postComment', 'addCommentToPost', 'postVideo'];
-  function videoCtrl($http, seedFactory, getPosts, postComment, addCommentToPost, postVideo){
+  videoCtrl.$inject = ['$http', 'seedFactory', 'getPosts', 'postComment', 'addCommentToPost', 'postVideo', 'signinUser'];
+  function videoCtrl($http, seedFactory, getPosts, postComment, addCommentToPost, postVideo, signinUser){
     //////////////////////
     //////global variables
     //////////////////////
     var self = this;
     self.videoOpen     = false; ////this toggles an ng-if to open a modal
     self.signinToggle  = false; ////this toggles an ng-if to open a signin modal
+    self.admin         = false; ////global variable to show cms functionality
     self.allPosts;
     self.allComments   = []
     var loadCount = 0;
     //////////////////////
     //end global variables
     //////////////////////
+
+    ///function to check token for admin access
+    function checkToken(){
+      if(window.localStorage.skateToken == "admin"){
+        self.admin = true;
+      }
+    }
+
 
     //////load all of our posts into a global variable
     getPosts()
@@ -125,15 +134,41 @@ angular.module('videoController', ['seedFactory', 'getPostsFactory', 'postCommen
     ///////////////////////////
     ////Signin Logic //////////
     ///////////////////////////
+
+    //////function to open modal
     function openSigninModal(){
       console.log('yoyo');
       self.signinToggle = !self.signinToggle;
       self.videoOpen = false;
-      if(self.signinToggle == true){
-
-      }
     }
     self.openSignin = openSigninModal;
+
+    ///////function to submit signin credentials
+    function signinNewUser(){
+      var username = document.querySelector('.signinUsername').value;
+      var password = document.querySelector('.signinPassword').value;
+      var signinCreds = {username: username, password: password}
+      console.log(signinCreds);
+      signinUser(signinCreds)
+      .then(function(user){
+        self.currentUser = user.data;
+        console.log(self.currentUser);
+        if(self.currentUser == 'no user'){
+          alert('couldnt find that username')
+          self.signinToggle = !self.signinToggle;
+        }
+        else if(self.currentUser == 'password match issue'){
+          alert('password didnt match')
+          self.signinToggle = !self.signinToggle;
+        }
+        else {
+          window.localStorage.skateToken = "admin";
+          self.admin = true;
+          self.signinToggle = !self.signinToggle;
+        }
+      })
+    }
+    self.signinNewUser = signinNewUser;
     ///////////////////////////
     //end Signin Logic ////////
     ///////////////////////////

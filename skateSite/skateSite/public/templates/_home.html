@@ -1,5 +1,5 @@
 <div class="signinButton" ng-click='video.openSignin()'>Signin</div>
-<div class="newPostButton" ng-click='video.openModal()'></div>
+<div class="newPostButton" ng-click='video.openModal()' ng-if='video.admin'></div>
 <div class="postModal" ng-if='video.videoOpen'>
   <input type="text" name="name" placeholder="video embed code" class='modalInput postEmbedCode'>
   <input type="text" name="name" placeholder="Title" class='postTitle modalInput'>
@@ -7,7 +7,13 @@
   <input type="button" name="name" value="Submit" class='postSubmit' ng-click='video.submitPost()'>
 </div>
 <div class="signinModal" ng-if='video.signinToggle'>
-  Yooooo
+  <div class="signinBox">
+    <input type="text" name="username" placeholder='Username' class='signinUsername modalInput'>
+    <input type="text" name="password" placeholder='Password' class='signinPassword modalInput'>
+    <div class="signinSubmit" ng-click='video.signinNewUser()'>
+      Sign In
+    </div>
+  </div>
 </div>
 <h2>The Skate Feed</h2>
 
