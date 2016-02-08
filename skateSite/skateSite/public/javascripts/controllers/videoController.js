@@ -22,6 +22,11 @@ angular.module('videoController', ['seedFactory', 'getPostsFactory', 'postCommen
       .then(function(allPosts){
         self.allPosts = allPosts.data;/////this is our global "All Posts" variable
         self.allPosts = self.allPosts.reverse();
+        // for (var i = 0; i < self.allPosts.length; i++) {
+        //   $("#video"+i).ready(function(){
+        //     $("#video"+i).attr('src', "https://www.youtube.com/embed/"+self.allPosts[i].ytEmbedCode)
+        //   })
+        // }
         console.log(self.allPosts);
         loadComments(self.allPosts);
       })
@@ -85,7 +90,6 @@ angular.module('videoController', ['seedFactory', 'getPostsFactory', 'postCommen
     ///////////////Post a Video Modal Logic
     ///////////////////////////////////////
     function openModal(){
-      console.log(self.videoOpen);
       self.videoOpen = !self.videoOpen;
       self.signinToggle = false;
     }

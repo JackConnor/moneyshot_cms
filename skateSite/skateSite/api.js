@@ -2,6 +2,7 @@ var express        = require('express');
 var mongoose       = require('mongoose');
 var bodyParser     = require('body-parser');
 var route          = express.Router();
+var bcrypt         = require('bcrypt');
 var methodOverride = require('method-override');
 
 /////////////////////
@@ -9,6 +10,7 @@ var methodOverride = require('method-override');
 ////require model////
 var Videopost = require('./models/videopost.js');
 var Comment   = require('./models/comment.js');
+var User      = require('./models/user.js');
 ////require model////
 /////////////////////
 /////////////////////
@@ -29,16 +31,13 @@ module.exports = function(app){
   })
 
   app.post('/api/video', function(req, res){
-    console.log(req.body);
     var newVideo = new Videopost();
-    console.log(newVideo);
     newVideo.creator = req.body.creator;
     newVideo.title = req.body.title;
     newVideo.description = req.body.description;
     newVideo.ytEmbedCode = req.body.ytEmbedCode;
     newVideo.save(function(err, savedVideo){
       if(err){console.log(err)}
-      console.log(savedVideo);
       res.json(savedVideo)
     })
   })
@@ -82,6 +81,45 @@ module.exports = function(app){
   //////end all comment routes
   ///////////////////////////////////
 
+  ///////////////////////////////////
+  //////Begin all User routes
+  ///////////////////////////////////
+
+
+  app.post('/api/new/user', function(req, res){
+    console.log(req.body);
+    bcrypt.genSalt(10, function(err, salt){
+      console.log(salt);
+      bcrypt.hash(req.body.password, salt, function(err, hash){
+        console.log(hash);
+        User.create({username: req.body.username, passwordDigest: hash}, function(err, newUser){
+          console.log(newUser);
+          res.json(newUser);
+        })
+      })
+    })
+  })
+
+  app.post('/api/admin/signin', function(req, res){
+    console.log(req.body);
+    User.findOne({"username":req.body.username}, function(err, user){
+      if(err){console.log(err)}
+      console.log(user);
+      console.log(req.body.password);
+      console.log(user.passwordDigest);
+      var passwordHash =  bcrypt.compareSync(req.body.password, user.passwordDigest);
+      console.log(passwordHash);
+      bcrypt.compare(req.body.password, user.passwordDigest, function(err, result){
+        console.log(result);
+        if(result == true){
+          res.json(user);
+        }
+      });
+    })
+  })
+  ///////////////////////////////////
+  //////End all User routes
+  ///////////////////////////////////
 }
 
 mongoose.connect("mongodb://jackconnor:Skateboard1@ds037195.mongolab.com:37195/skate_site");
