@@ -24,6 +24,12 @@ angular.module('singleController', ['getPostFactory', 'signupUserFactory', 'sign
     }
     checkToken();
 
+    ///////go to home from from logo click
+    function goToHome(){
+      window.location.hash = '#/'
+    }
+    self.goToHome = goToHome;
+
     ////////function to load the video asynchronously
 
     getPost(window.location.hash.split('/')[2])
