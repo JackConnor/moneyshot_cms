@@ -26,10 +26,8 @@ angular.module('singleController', ['getPostFactory', 'signupUserFactory', 'sign
 
     ////////function to load the video asynchronously
 
-    console.log(getPost);
     getPost(window.location.hash.split('/')[2])
       .then(function(currentPost){
-        console.log(currentPost);
         self.singlePostData = currentPost.data;
         $("#videoSingle").attr('src', "https://www.youtube.com/embed/"+self.singlePostData.ytEmbedCode)
       })

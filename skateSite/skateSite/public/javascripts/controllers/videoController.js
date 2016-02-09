@@ -39,7 +39,6 @@ angular.module('videoController', ['seedFactory', 'getPostsFactory', 'postCommen
       .then(function(allPosts){
         self.allPosts = allPosts.data;/////this is our global "All Posts" variable
         self.allPosts = self.allPosts.reverse();
-        console.log(self.allPosts);
         loadComments(self.allPosts);
       })
 
@@ -50,7 +49,7 @@ angular.module('videoController', ['seedFactory', 'getPostsFactory', 'postCommen
     }
 
     /////function to asynchronously load all the youtube videos
-    setInterval(function(){
+    function loadVideos(){
       if(loadCount <= 15 && $('#video0').attr('src') == ''){
         for (var i = 0; i < self.allPosts.length; i++) {
           $("#video"+i).ready(function(){
@@ -61,25 +60,21 @@ angular.module('videoController', ['seedFactory', 'getPostsFactory', 'postCommen
       else if(loadCount <= 15 && $('#video0').attr('src') != ''){
         loadCount = 16;
       }
-      else {
-
-      }
-    }, 500);
+      else {}
+    }
+    setInterval(loadVideos, 500);
 
     ////////////////////////////
     ///begin logic for comment
     ////////////////////////////
     function addComment(evt, index){
-      console.log(index);
       var postId = evt.currentTarget.id
       var commentText = evt.target.parentNode.children.commentText.value;
-      console.log(commentText);
       postComment({content: commentText, videoPost: postId})
       .then(function(newComment){
         self.allComments[index].push(newComment.data)/////update the current array live
         addCommentToPost(postId, newComment.data)
         .then(function(updPost){
-          console.log(updPost);
         })
       })
     }
@@ -90,8 +85,6 @@ angular.module('videoController', ['seedFactory', 'getPostsFactory', 'postCommen
 
     /////function to see full single post
     function goToSingle(postId){
-      console.log('yooyoy');
-      console.log(postId);
       window.location.hash = "#/video/"+postId;
     }
     self.goToSingle = goToSingle;
@@ -112,17 +105,15 @@ angular.module('videoController', ['seedFactory', 'getPostsFactory', 'postCommen
       var description = document.querySelector('.postDescription').value;
       postVideo({title: title, embedCode: embedCode, description: description})
       .then(function(newPost){
-        console.log(newPost);
-        self.allPosts.reverse();
+        self.allPosts = self.allPosts.reverse();
         self.allPosts.push(newPost.data);
-        self.allPosts.reverse();
+        self.allPosts = self.allPosts.reverse();
+        console.log(self.allPosts);
+        loadCount = 0;
+        setInterval(loadVideos, 500);
         self.allComments.reverse();
         self.allComments.push([]);
         self.allComments.reverse();
-        $("#video0").attr('src', "https://www.youtube.com/embed/"+self.allPosts[0].ytEmbedCode);
-        setTimeout(function(){
-          $("#video0").attr('src', "https://www.youtube.com/embed/"+self.allPosts[0].ytEmbedCode)
-        }, 1500);
         self.videoOpen = !self.videoOpen;
       })
     }
@@ -160,11 +151,9 @@ angular.module('videoController', ['seedFactory', 'getPostsFactory', 'postCommen
       var username = document.querySelector('.signinUsername').value;
       var password = document.querySelector('.signinPassword').value;
       var signinCreds = {username: username, password: password}
-      console.log(signinCreds);
       signinUser(signinCreds)
       .then(function(user){
         self.currentUser = user.data;
-        console.log(self.currentUser);
         if(self.currentUser == 'no user'){
           alert('couldnt find that username')
           self.signinToggle = !self.signinToggle;
@@ -209,7 +198,6 @@ angular.module('videoController', ['seedFactory', 'getPostsFactory', 'postCommen
       else {
         var userCredentials = {username: username, password}
       }
-      console.log(userCredentials);
       signupUser(userCredentials)
         .then(function(newUser){
           if(newUser.data == 'password issue'){
@@ -219,7 +207,6 @@ angular.module('videoController', ['seedFactory', 'getPostsFactory', 'postCommen
             alert('that username is already taken, could you try another one?')
           }
           else {
-            console.log(newUser.data);
             if(newUser.data.admin == true){
               window.localStorage.skateToken = "admin";
               self.signedInUser = !self.signedInUser;
