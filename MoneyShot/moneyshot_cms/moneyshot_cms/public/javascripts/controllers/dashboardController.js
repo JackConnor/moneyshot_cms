@@ -2,9 +2,9 @@ angular.module('dashboardController', [])
 
   .controller('dashboardCtrl', dashboardCtrl);
 
-  dashboardCtrl.$inject = ['allPhotos'];
+  dashboardCtrl.$inject = ['allPhotos', 'submitPrice'];
 
-  function dashboardCtrl(allPhotos){
+  function dashboardCtrl(allPhotos, submitPrice){
     //////////////////////////////////
     ////////begin all global variables
     var self = this;
@@ -12,6 +12,7 @@ angular.module('dashboardController', [])
     self.yesNoPopupVariable = false;
     //////////end all global variables
     //////////////////////////////////
+    console.log(submitPrice);
 
     ///////function to load all Photos
     allPhotos()
@@ -43,5 +44,18 @@ angular.module('dashboardController', [])
 
     self.yesNoPopup = function(){
       self.yesNoPopupVariable = true;
+    }
+
+
+    /////////////functions to submit accepted photo, with price, to the database
+    self.submitSuccessPhoto = function submitSuccessPhoto(){
+      var price = $('.popupPrice').val();
+      console.log(price);
+      var photoId = $('.yesTab')[0].id
+      console.log(photoId);
+      submitPrice(photoId, price)
+      .then(function(newPhoto){
+        console.log(newPhoto);
+      })
     }
   }

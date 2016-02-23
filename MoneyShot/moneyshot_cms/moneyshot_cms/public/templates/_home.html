@@ -3,6 +3,28 @@
     <div class="popupImageFrame col-sm-6 col-xs-12">
       <img src="{{dash.currentPhoto.url}}" alt="" />
     </div>
+    <div class="popupInfoContainer col-sm-6 col-xs-12">
+      <p>
+        who: <span ng-repeat='person in dash.currentPhoto.photosubjects'>{{person}}, </span>
+      </p>
+      <p>
+        where: {{dash.currentPhoto.location}}
+      </p>
+      <p>
+        when: {{dash.currentPhoto.date}}
+      </p>
+      <input type="text" placeholder='enter price' class='popupPrice'>
+    </div>
+    <div class="col-xs-12">
+      <div class="singleYesNoContainer col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-12 col-xs-offset-0">
+        <div class="yesTab selectionTab col-xs-6" ng-click='dash.submitSuccessPhoto()' id='{{dash.currentPhoto._id}}'>
+          Yes
+        </div>
+        <div class="noTab selectionTab col-xs-6">
+          No
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 <div class="tabsContainer row">

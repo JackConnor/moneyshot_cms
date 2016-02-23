@@ -38,6 +38,20 @@
   height: 100%;
 }
 
+.popupInfoContainer {
+  font-size: 20px;
+  text-align: center;
+}
+
+.popupPrice {
+  height: 60px;
+  font-size: 27px;
+  text-align: center;
+  background-color: #b0e0e6;
+  color: #1e7f91;
+  margin-top: 45px;
+}
+
 .selectionTab {
   height: 100%;
   outline: 2px solid green;
@@ -63,8 +77,9 @@
 
 .singleYesNoContainer {
   height: 80px;
-  outline: 2px solid red;
   padding: 0px;
+  margin-top: 15px;
+  padding-bottom: 25px;
 }
 
 .tabsContainer {
@@ -76,7 +91,7 @@
 
 .yesNoContainer {
   outline: 2px solid black;
-  height: 80%;
+  height: auto;
   margin-top: 5%;
   padding: 0px;
   background-color: white;
