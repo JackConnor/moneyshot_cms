@@ -2,9 +2,9 @@ angular.module('dashboardController', [])
 
   .controller('dashboardCtrl', dashboardCtrl);
 
-  dashboardCtrl.$inject = ['allPhotos', 'submitPrice'];
+  dashboardCtrl.$inject = ['$http','allPhotos', 'submitPrice'];
 
-  function dashboardCtrl(allPhotos, submitPrice){
+  function dashboardCtrl($http, allPhotos, submitPrice){
     //////////////////////////////////
     ////////begin all global variables
     var self = this;
@@ -12,13 +12,22 @@ angular.module('dashboardController', [])
     self.yesNoPopupVariable = false;
     //////////end all global variables
     //////////////////////////////////
-    console.log(submitPrice);
 
     ///////function to load all Photos
     allPhotos()
     .then(function(photoList){
-      console.log(photoList);
       self.allPhotos = photoList.data.reverse();
+      //////lets add all the sold photos to it's own array
+      console.log('P',self.allPhotos);
+      self.soldPhotos = []
+      for (var i = 0; i < self.allPhotos.length; i++) {
+        if(self.allPhotos[i].status == 'sold'){
+          self.soldPhotos.push(self.allPhotos[i]);
+          console.log('Added', self.soldPhotos);
+          // self.allPhotos[i].slice(i, 1);
+
+        }
+      }
       self.currentPhoto = self.allPhotos[0];
     })
 
@@ -48,14 +57,43 @@ angular.module('dashboardController', [])
 
 
     /////////////functions to submit accepted photo, with price, to the database
-    self.submitSuccessPhoto = function submitSuccessPhoto(){
+    self.submitSuccessPhoto = function submitSuccessPhoto(photoId){
       var price = $('.popupPrice').val();
       console.log(price);
-      var photoId = $('.yesTab')[0].id
       console.log(photoId);
       submitPrice(photoId, price)
       .then(function(newPhoto){
         console.log(newPhoto);
+        self.soldPhotos.push(newPhoto.data);
+        console.log(self.soldPhotos);
+        self.yesNoPopupVariable = false;
+        //////function to slice out the photo from the allphotos array
+        for (var i = 0; i < self.allPhotos.length; i++) {
+          if(self.allPhotos[i]._id == photoId){
+            console.log(self.allPhotos);
+            self.allPhotos.splice(i, 1);
+            console.log(self.allPhotos);
+          }
+        }
+        self.currentPhoto = self.allPhotos[0];
       })
     }
+
+    /////close popup
+    self.closePopup = function(){
+      self.yesNoPopupVariable = false;
+    }
+
+    //////////function to click on a photo to open the photo Popup modal
+    self.submitPhoto = function(photo){
+      currentPhotoFunc(photo);
+      self.yesNoPopupVariable = true;
+    }
+
+    function currentPhotoFunc(photo){
+      //////photo is the whole photo object
+      self.currentPhoto = photo;
+      self.yesNoPopupVariable = true;
+    }
+    self.currentPhotoFunc = currentPhotoFunc;
   }

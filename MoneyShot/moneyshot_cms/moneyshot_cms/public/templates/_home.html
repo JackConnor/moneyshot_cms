@@ -1,4 +1,7 @@
 <div class="yesNoPopup" ng-if='dash.yesNoPopupVariable'>
+  <div class="xOutPopup" ng-click='dash.closePopup()'>
+    <h1>X</h1>
+  </div>
   <div class="yesNoContainer col-sm-10 col-sm-offset-1 col-xs-12 col-xs-offset-0 ">
     <div class="popupImageFrame col-sm-6 col-xs-12">
       <img src="{{dash.currentPhoto.url}}" alt="" />
@@ -17,7 +20,7 @@
     </div>
     <div class="col-xs-12">
       <div class="singleYesNoContainer col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-12 col-xs-offset-0">
-        <div class="yesTab selectionTab col-xs-6" ng-click='dash.submitSuccessPhoto()' id='{{dash.currentPhoto._id}}'>
+        <div class="yesTab selectionTab col-xs-6" ng-click='dash.submitSuccessPhoto(dash.currentPhoto._id)' id='{{dash.currentPhoto._id}}'>
           Yes
         </div>
         <div class="noTab selectionTab col-xs-6">
@@ -53,10 +56,12 @@
   </div>
 </div>
 <div class="photosContainer" ng-repeat='photo in dash.allPhotos' ng-if="dash.currentTab == 'allPhotos'">
-  <div class="photoFrame col-sm-4 col-xs-6">
-    <img class='photoImage' src="{{photo.url}}" alt="" />
+  <div class="photoFrame col-sm-4 col-xs-6" >
+    <img class='photoImage' src="{{photo.url}}" alt="" id='{{photo._id}}' ng-click='dash.submitPhoto(photo)'/>
   </div>
 </div>
-<div class="soldPhotosContainer col-xs-12" ng-if="dash.currentTab == 'soldPhotos'">
-
+<div class="soldPhotosContainer" ng-repeat='soldphoto in dash.soldPhotos' ng-if="dash.currentTab == 'soldPhotos'">
+  <div class="photoFrame col-sm-4 col-xs-6">
+    <img class='photoImage' src="{{soldphoto.url}}" alt="" />
+  </div>
 </div>
