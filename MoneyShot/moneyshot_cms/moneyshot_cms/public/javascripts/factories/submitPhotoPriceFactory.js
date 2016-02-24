@@ -8,7 +8,7 @@ angular.module('submitPhotoPriceFactory', [])
     function updatePhoto(photoId, newPrice){
       return $http({
         method: "POST"
-        ,url: "http://localhost:5555/api/accepted/photo"
+        ,url: "https://moneyshotapi.herokuapp.com/api/accepted/photo"
         ,data: {_id: photoId, price: newPrice, status: "sold"}
       })
     }

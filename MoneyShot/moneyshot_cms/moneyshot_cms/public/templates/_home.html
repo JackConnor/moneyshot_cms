@@ -56,9 +56,13 @@
   </div>
 </div>
 <div class="photosContainer" ng-repeat='photo in dash.allPhotos' ng-if="dash.currentTab == 'allPhotos'">
+
   <div class="photoFrame col-sm-4 col-xs-6" >
     <img class='photoImage' src="{{photo.url}}" alt="" id='{{photo._id}}' ng-click='dash.submitPhoto(photo)'/>
+    <h2 class="photoName">{{photo.photosubjects[0]}}</h1>
   </div>
+
+
 </div>
 <div class="soldPhotosContainer" ng-repeat='soldphoto in dash.soldPhotos' ng-if="dash.currentTab == 'soldPhotos'">
   <div class="photoFrame col-sm-4 col-xs-6">
