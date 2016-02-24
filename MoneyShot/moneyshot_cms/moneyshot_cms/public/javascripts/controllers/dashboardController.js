@@ -72,17 +72,16 @@ angular.module('dashboardController', [])
     self.rejectPhoto = function(photoId){
       rejectPhoto(photoId)
       .then(function(rejectedPhoto){
-        console.log(rejectedPhoto);
-        console.log(self.allPhotos);
-        console.log(self.soldPhotos);
         //////lets clean up the dashboard arrays
+        /////allPhotosArray
         for (var i = 0; i < self.allPhotos.length; i++) {
           if(self.allPhotos[i]._id == rejectedPhoto.data._id){
             self.allPhotos.splice(i, 1);
-            console.log(self.allPhotos[i]);
           }
-          else if(self.soldPhotos[i]._id == rejectedPhoto.data._id){
-            console.log(self.soldPhotos[i]);
+        }
+        /////soldPhotos array
+        for (var i = 0; i < self.soldPhotos.length; i++) {
+          if(self.soldPhotos[i]._id == rejectedPhoto.data._id){
             self.soldPhotos.splice(i, 1);
           }
         }
@@ -107,6 +106,12 @@ angular.module('dashboardController', [])
     }
     self.currentPhotoFunc = currentPhotoFunc;
 
-
+    ///////function to have the photo carousel change properly
+    function nextCarousel(){
+      self.allPhotos = self.allPhotos.slice(1, self.allPhotos.length);
+      self.currentPhoto = self.allPhotos[0];
+      console.log(self.allPhotos);
+    }
+    self.nextCarousel = nextCarousel;
 
   }

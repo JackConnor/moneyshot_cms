@@ -21,10 +21,10 @@
     <div class="col-xs-12">
       <div class="singleYesNoContainer col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-12 col-xs-offset-0">
         <div class="yesTab selectionTab col-xs-6" ng-click='dash.submitSuccessPhoto(dash.currentPhoto._id)' id='{{dash.currentPhoto._id}}'>
-          Yes
+          Sell
         </div>
-        <div class="noTab selectionTab col-xs-6">
-          No
+        <div class="noTab selectionTab col-xs-6" ng-click='dash.rejectPhoto(dash.currentPhoto._id); dash.yesNoPopupVariable = false;'>
+          Reject
         </div>
       </div>
     </div>
@@ -48,10 +48,10 @@
   </div>
   <div class="singleYesNoContainer col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-12 col-xs-offset-0">
     <div class="yesTab selectionTab col-xs-6" ng-click='dash.yesNoPopup()'>
-      Yes
+      Sell
     </div>
-    <div class="noTab selectionTab col-xs-6" ng-click='dash.rejectPhoto(dash.currentPhoto._id)'>
-      No
+    <div class="noTab selectionTab col-xs-6" ng-click='dash.rejectPhoto(dash.currentPhoto._id); dash.nextCarousel()'>
+      Reject
     </div>
   </div>
 </div>
