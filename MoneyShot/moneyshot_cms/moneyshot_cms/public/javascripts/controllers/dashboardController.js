@@ -16,20 +16,22 @@ angular.module('dashboardController', [])
     ///////function to load all Photos
     allPhotos()
     .then(function(photoList){
-      self.rawPhotos = photoList.data.reverse();
+      console.log(photoList)
+      self.allPhotos = photoList.data.reverse();
       //////lets add all the sold photos to it's own array
       self.soldPhotos = [];
-      self.allPhotos  = [];
-      for (var i = 0; i < self.rawPhotos.length; i++) {
-        if(self.rawPhotos[i].status == 'sold'){
-          self.soldPhotos.push(self.rawPhotos[i]);
-
+      // self.allPhotos  = [];
+      for (var i = 0; i < self.allPhotos.length; i++) {
+        if(self.allPhotos[i].status == 'sold'){
+          self.soldPhotos.push(self.allPhotos[i]);
         }
-        else if(self.rawPhotos[i].status == 'submitted for sale'){
-          self.allPhotos.push(self.rawPhotos[i])
-        }
+        // else if(self.rawPhotos[i].status == 'submitted for sale'){
+        //   self.allPhotos.push(self.rawPhotos[i])
+        // }
       }
       self.currentPhoto = self.allPhotos[0];
+      console.log('all photos')
+      console.log(self.allPhotos)
     })
 
     ////////////function to controler which tab is showing;
