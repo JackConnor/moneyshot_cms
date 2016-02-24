@@ -2,9 +2,9 @@ angular.module('dashboardController', [])
 
   .controller('dashboardCtrl', dashboardCtrl);
 
-  dashboardCtrl.$inject = ['$http','allPhotos', 'submitPrice'];
+  dashboardCtrl.$inject = ['$http','allPhotos', 'submitPrice', 'rejectPhoto'];
 
-  function dashboardCtrl($http, allPhotos, submitPrice){
+  function dashboardCtrl($http, allPhotos, submitPrice, rejectPhoto){
     //////////////////////////////////
     ////////begin all global variables
     var self = this;
@@ -18,13 +18,10 @@ angular.module('dashboardController', [])
     .then(function(photoList){
       self.allPhotos = photoList.data.reverse();
       //////lets add all the sold photos to it's own array
-      console.log('P',self.allPhotos);
       self.soldPhotos = []
       for (var i = 0; i < self.allPhotos.length; i++) {
         if(self.allPhotos[i].status == 'sold'){
           self.soldPhotos.push(self.allPhotos[i]);
-          console.log('Added', self.soldPhotos);
-          // self.allPhotos[i].slice(i, 1);
 
         }
       }
@@ -55,27 +52,40 @@ angular.module('dashboardController', [])
       self.yesNoPopupVariable = true;
     }
 
-
     /////////////functions to submit accepted photo, with price, to the database
     self.submitSuccessPhoto = function submitSuccessPhoto(photoId){
       var price = $('.popupPrice').val();
-      console.log(price);
-      console.log(photoId);
       submitPrice(photoId, price)
       .then(function(newPhoto){
-        console.log(newPhoto);
         self.soldPhotos.push(newPhoto.data);
-        console.log(self.soldPhotos);
         self.yesNoPopupVariable = false;
         //////function to slice out the photo from the allphotos array
         for (var i = 0; i < self.allPhotos.length; i++) {
           if(self.allPhotos[i]._id == photoId){
-            console.log(self.allPhotos);
             self.allPhotos.splice(i, 1);
-            console.log(self.allPhotos);
           }
         }
         self.currentPhoto = self.allPhotos[0];
+      })
+    }
+
+    self.rejectPhoto = function(photoId){
+      rejectPhoto(photoId)
+      .then(function(rejectedPhoto){
+        console.log(rejectedPhoto);
+        console.log(self.allPhotos);
+        console.log(self.soldPhotos);
+        //////lets clean up the dashboard arrays
+        for (var i = 0; i < self.allPhotos.length; i++) {
+          if(self.allPhotos[i]._id == rejectedPhoto.data._id){
+            self.allPhotos.splice(i, 1);
+            console.log(self.allPhotos[i]);
+          }
+          else if(self.soldPhotos[i]._id == rejectedPhoto.data._id){
+            console.log(self.soldPhotos[i]);
+            self.soldPhotos.splice(i, 1);
+          }
+        }
       })
     }
 
@@ -90,10 +100,13 @@ angular.module('dashboardController', [])
       self.yesNoPopupVariable = true;
     }
 
+    ////function to change a the active current photo to a new one
     function currentPhotoFunc(photo){
       //////photo is the whole photo object
       self.currentPhoto = photo;
-      self.yesNoPopupVariable = true;
     }
     self.currentPhotoFunc = currentPhotoFunc;
+
+
+
   }

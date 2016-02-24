@@ -5,7 +5,6 @@ angular.module('allPhotosFactory', [])
   allPhotos.$inject = ["$http"];
 
   function allPhotos($http){
-    console.log('in the photos factory');
     function getPhotos(){
       return $http({
         method: "GET"

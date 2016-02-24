@@ -9,7 +9,7 @@ angular.module('submitPhotoPriceFactory', [])
       return $http({
         method: "POST"
         ,url: "http://localhost:5555/api/accepted/photo"
-        ,data: {_id: photoId, price: newPrice}
+        ,data: {_id: photoId, price: newPrice, status: "sold"}
       })
     }
 
