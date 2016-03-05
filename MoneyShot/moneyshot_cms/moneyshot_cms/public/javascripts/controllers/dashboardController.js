@@ -1,10 +1,17 @@
 angular.module('dashboardController', [])
 
-  .controller('dashboardCtrl', dashboardCtrl);
+  .controller('dashboardCtrl', dashboardCtrl)
 
-  dashboardCtrl.$inject = ['$http','allPhotos', 'submitPrice', 'rejectPhoto'];
+  .filter('trustUrl', function ($sce) {
+    return function(url) {
+      return $sce.trustAsResourceUrl(url);
+    };
+  })
 
-  function dashboardCtrl($http, allPhotos, submitPrice, rejectPhoto){
+  dashboardCtrl.$inject = ['$http','allPhotos', 'submitPrice', 'rejectPhoto', '$sce'];
+
+  function dashboardCtrl($http, allPhotos, submitPrice, rejectPhoto, $sce){
+    console.log($sce);
     //////////////////////////////////
     ////////begin all global variables
     var self = this;
@@ -17,17 +24,18 @@ angular.module('dashboardController', [])
     allPhotos()
     .then(function(photoList){
       console.log(photoList)
-      self.allPhotos = photoList.data.reverse();
+      self.rawPhotos = photoList.data.reverse();
       //////lets add all the sold photos to it's own array
       self.soldPhotos = [];
+      self.allPhotos  = [];
       // self.allPhotos  = [];
-      for (var i = 0; i < self.allPhotos.length; i++) {
-        if(self.allPhotos[i].status == 'sold'){
-          self.soldPhotos.push(self.allPhotos[i]);
+      for (var i = 0; i < self.rawPhotos.length; i++) {
+        if(self.rawPhotos[i].status == 'sold'){
+          self.soldPhotos.push(self.rawPhotos[i]);
         }
-        // else if(self.rawPhotos[i].status == 'submitted for sale'){
-        //   self.allPhotos.push(self.rawPhotos[i])
-        // }
+        else if(self.rawPhotos[i].status == 'submitted for sale'){
+          self.allPhotos.push(self.rawPhotos[i])
+        }
       }
       self.currentPhoto = self.allPhotos[0];
       console.log('all photos')

@@ -4,7 +4,8 @@
   </div>
   <div class="yesNoContainer col-sm-10 col-sm-offset-1 col-xs-12 col-xs-offset-0 ">
     <div class="popupImageFrame col-sm-6 col-xs-12">
-      <img src="{{dash.currentPhoto.url}}" alt="" />
+      <img src="{{dash.currentPhoto.url}}" ng-if="!dash.currentPhoto.isVideo"/>
+      <video ng-src="{{dash.currentPhoto.url | trustUrl}}" ng-if="dash.currentPhoto.isVideo" controls></video>
     </div>
     <div class="popupInfoContainer col-sm-6 col-xs-12">
       <p>
@@ -42,7 +43,6 @@
   </div>
 </div>
 <div class="photoStreamContainer" ng-if="dash.currentTab == 'photoStream'">
-  Single Photo goes here
   <div class="singlePhotoFrame col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-12 col-xs-offset-0">
     <img src="{{dash.currentPhoto.url}}" alt="" />
   </div>
@@ -56,13 +56,11 @@
   </div>
 </div>
 <div class="photosContainer" ng-repeat='photo in dash.allPhotos' ng-if="dash.currentTab == 'allPhotos'">
-
   <div class="photoFrame col-sm-4 col-xs-6" >
-    <img class='photoImage' src="{{photo.url}}" alt="" id='{{photo._id}}' ng-click='dash.submitPhoto(photo)'/>
-    <h2 class="photoName">{{photo.photosubjects[0]}}</h1>
+    <img class='photoImage' src="{{photo.url}}" alt="" id='{{photo._id}}' ng-click='dash.submitPhoto(photo)' ng-if="photo.isVideo == false"/>
+    <video ng-src="{{photo.url | trustUrl}}" ng-click='dash.submitPhoto(photo)' ng-if="photo.isVideo" controls></video>
+    <!-- <h2 class="photoName">{{photo.photosubjects[0]}}</h1> -->
   </div>
-
-
 </div>
 <div class="soldPhotosContainer" ng-repeat='soldphoto in dash.soldPhotos' ng-if="dash.currentTab == 'soldPhotos'">
   <div class="photoFrame col-sm-4 col-xs-6">

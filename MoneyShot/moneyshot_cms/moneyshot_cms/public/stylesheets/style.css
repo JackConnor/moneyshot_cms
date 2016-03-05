@@ -1,6 +1,6 @@
 html {
   background-color: #A8C4C6;
-  
+
 }
 
 section {
@@ -27,6 +27,12 @@ section {
   padding: 12px;
 }
 
+.photoFrame video{
+  width: 100%;
+  height: 100%;
+  padding: 12px;
+}
+
 .photoName {
   padding-left: 15px;
   margin-top: 0px;
@@ -36,10 +42,6 @@ section {
   background-color: #B2ABAB;
   color: white;
   font-weight: 200;
-
-
-
-
 }
 
 .photoStreamContainer {
@@ -184,7 +186,7 @@ background: linear-gradient(to bottom, #8c8a89 0%,#a3c8ed 100%);
 
 .yesTab {
   background-color: #7FC17A;
-  
+
   color: white;
 }
 
