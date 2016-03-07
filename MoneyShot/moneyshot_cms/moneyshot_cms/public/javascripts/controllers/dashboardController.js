@@ -111,6 +111,7 @@ angular.module('dashboardController', [])
     self.submitPhoto = function(photo){
       currentPhotoFunc(photo);
       self.yesNoPopupVariable = true;
+      $('body').scrollTop(0);
     }
 
     ////function to change a the active current photo to a new one
