@@ -8,6 +8,15 @@ section {
 
 }
 
+.noTab {
+  background-color: #E25454;
+  color: white;
+}
+
+.people {
+ font-weight: 400;
+ color: red;
+}
 
 .photosContainer {
   width: 95%;
@@ -152,18 +161,26 @@ section {
 }
 
 .tabsContainer {
-  margin-top: 10px;
+  padding-top: 10px;
   width: 80%;
   margin-left: 10%;
   height: 60px;
+}
 
+.xOutPopup {
+  color: white;
+  font-size: 30px;
+  float: right;
+  margin-right: 10px;
+  margin-top: 10px;
+  cursor: pointer;
 }
 
 .yesNoContainer {
   outline: 2px solid grey;
   border-radius: 10px;
   height: auto;
-  margin-top: 5%;
+  margin-top: 5px;
   padding: 0px;
   background: #8c8a89; /* Old browsers */
 background: -moz-linear-gradient(top, #8c8a89 0%, #a3c8ed 100%); /* FF3.6-15 */
@@ -172,25 +189,16 @@ background: linear-gradient(to bottom, #8c8a89 0%,#a3c8ed 100%);
 }
 
 .yesNoPopup {
-  position: absolute;
+  position: fixed;
+  margin: 0px;
   width: 100%;
   height: 100%;
-  background-color: gray;
+  background-color: #6D7B8D;
   z-index: 5;
-}
-
- .people {
-  font-weight: 400;
-  color: red;
 }
 
 .yesTab {
   background-color: #7FC17A;
 
-  color: white;
-}
-
-.noTab {
-  background-color: #E25454;
   color: white;
 }
