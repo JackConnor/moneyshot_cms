@@ -30,7 +30,7 @@ angular.module('dashboardController', [])
       self.allPhotos  = [];
       // self.allPhotos  = [];
       for (var i = 0; i < self.rawPhotos.length; i++) {
-        if(self.rawPhotos[i].status == 'sold'){
+        if(self.rawPhotos[i].status == 'sold || offered for sale'){
           self.soldPhotos.push(self.rawPhotos[i]);
         }
         else if(self.rawPhotos[i].status == 'submitted for sale'){
