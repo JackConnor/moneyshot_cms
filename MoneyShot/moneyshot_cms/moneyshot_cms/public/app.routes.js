@@ -14,5 +14,11 @@ angular.module('app.routes', ['ngRoute'])
       ,controllerAs: 'dash'
     })
 
+    .when('/new/password/:user_id', {
+      templateUrl: 'templates/_newpassword.html'
+      ,controller: 'passwordCtrl'
+      ,controllerAs: 'password'
+    })
+
     .otherwise('/');
   }
